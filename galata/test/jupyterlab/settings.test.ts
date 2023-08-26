@@ -198,3 +198,36 @@ test.describe('change font-size', () => {
     expect(computedStyle.fontSize).toEqual(`${fontSize - 1}px`);
   });
 });
+
+test('Open the settings editor to codemirror', async ({ page }) => {
+  await page.evaluate(async () => {
+    await window.jupyterapp.commands.execute('settingeditor:open', {
+      query: 'Command Palette'
+    });
+  });
+
+  expect(
+    await page.locator('.jp-PluginList .jp-FilterBox input').inputValue()
+  ).toEqual('CodeMirror');
+
+  await expect(page.locator('.jp-SettingsForm')).toHaveCount(1);
+
+  // click code folding, highlight the active line, trailing white space, highlight white spaces
+
+  const checked = await page.$('div.checkbox > input:checked');
+
+  console.log(checked);
+
+  expect(checked);
+
+  // cons textList: Array[string] = ['Code Folding', 'Highlight the active line',
+  //                                 'Highlight trailing white space', 'Highlight white space']
+
+  // await page.click('.jp-PluginList-entry-label-text >> text=CodeMirror')
+
+  // for (const select_text of textList) {
+  //   await page.click('.form-group')
+  // }
+
+  // await page.click('')
+});
